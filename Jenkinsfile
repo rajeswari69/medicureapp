@@ -49,14 +49,14 @@ pipeline{
 		
 		stage('Terraform-stage'){
 			steps{
-		   		dir('Terraform-Files'){
+		   	
 					sh 'chmod 600 medicure.pem'
 					sh 'terraform init'
 					sh 'terraform validate'
 					sh 'terraform apply -auto-approve'
 				}
 			}
-		}
+		
 		
 		stage('Deploy app using ansible'){
 			steps{
