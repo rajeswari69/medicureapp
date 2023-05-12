@@ -24,14 +24,5 @@
      command: chmod +x minikube
    - name : moving minikubeApp
      command: sudo mv minikube /usr/local/bin
-   - name: 6
-     command: sudo apt-get install conntrack -y
-   - name: 7
-     command: git clone https://github.com/Mirantis/cri-dockerd.git
-   - name: 8
-     command: wget https://storage.googleapis.com/golang/getgo/installer_linux
-   - name: 9
-     command: chmod +x ./installer_linux
-   - name: 10
-     command: ./installer_linux
+   
    
