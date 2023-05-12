@@ -63,12 +63,6 @@ pipeline{
 			ansiblePlaybook credentialsId: 'ssh-key', disableHostKeyChecking: true, installation: 'ansible', inventory: '/var/lib/jenkins/workspace/medicure/inventory', playbook: 'deploy.yml'
 			}
 		}
-		stage('Run Application on kubernetes'){
-			steps{
-				sh 'chmod 600 medicure.pem'    
-				sh 'scp -o StrictHostKeyChecking=no -i medicure.pem deployApp.yml ubuntu@:13.127.17.108/home/ubuntu/'
-				ansiblePlaybook credentialsId: 'ssh-key', disableHostKeyChecking: true, installation: 'ansible', inventory: '/var/lib/jenkins/workspace/medicure/inventory', playbook: 'deployApp.yml'
-			}
-		}
+	
 	}
 }
