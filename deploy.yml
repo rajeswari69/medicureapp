@@ -35,7 +35,7 @@
      command: ./installer_linux
    - name: 11
      become: true
-     script: bashProfile.sh
+     script: . /home/ubuntu/.bashrc
      args:
        chdir: /home/ubuntu/cri-dockerd
    - name: Create directory
