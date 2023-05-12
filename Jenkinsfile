@@ -58,7 +58,7 @@ pipeline{
 			}
 		
 		
-		stage('Deploy app using ansible'){
+		stage('Minikube installation'){
 			steps{
 			ansiblePlaybook credentialsId: 'ssh-key', disableHostKeyChecking: true, installation: 'ansible', inventory: '/var/lib/jenkins/workspace/medicure/inventory', playbook: 'deploy.yml'
 			}
