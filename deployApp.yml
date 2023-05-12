@@ -10,4 +10,4 @@
    - name: sleeping
      command: sleep 20
    - name: ServiceFile
-     command: kubectl expose deployment medicureapplication --type=NodePort --port=8082
+     command: kubectl expose deployment medicure --type=NodePort --port=8082
