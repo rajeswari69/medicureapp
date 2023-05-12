@@ -35,10 +35,11 @@
    - name: 10
      command: ./installer_linux
    - name: 11
-     remote_src: true
+     become: true
      script: source ~/.bash_profile
      args:
        chdir: /home/ubuntu/cri-dockerd
+       remote_src: true
    - name: Create directory
      file:
        path: /home/ubuntu/cri-dockerd/bin
