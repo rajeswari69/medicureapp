@@ -24,5 +24,90 @@
      command: chmod +x minikube
    - name : moving minikubeApp
      command: sudo mv minikube /usr/local/bin
-   
+   - name: 6
+     command: sudo apt-get install conntrack -y
+   - name: 7
+     command: git clone https://github.com/Mirantis/cri-dockerd.git
+   - name: 8
+     command: wget https://storage.googleapis.com/golang/getgo/installer_linux
+   - name: 9
+     command: chmod +x ./installer_linux
+   - name: 10
+     command: ./installer_linux
+   - name: 11
+     become: true
+     script: bashProfile.sh
+     args:
+       chdir: /home/ubuntu/cri-dockerd
+   - name: Create directory
+     file:
+       path: /home/ubuntu/cri-dockerd/bin
+       state: directory
+       owner: root
+       group: root
+       mode: "0755"
+   - name: Install dependencies
+     shell: go get
+     args:
+       chdir: /home/ubuntu/cri-dockerd/
+   - name: Build binary
+     shell: go build -o bin/cri-dockerd
+     args:
+       chdir: /home/ubuntu/cri-dockerd/
+   - name: 15
+     command: mkdir -p /usr/local/bin
+   - name: Install cri-dockerd binary
+     become: true
+     command: "install -o root -g root -m 0755 /home/ubuntu/cri-dockerd/bin/cri-dockerd /usr/local/bin/cri-dockerd"
+   - name: Copying systemd files
+     become: true
+     copy:
+       src: /home/ubuntu/cri-dockerd/packaging/systemd/
+       dest: /etc/systemd/system/
+       owner: root
+       group: root
+       remote_src: yes
+   - name: 18
+     command: sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
+   - name: 19
+     command: systemctl daemon-reload
+   - name: 20
+     command: systemctl enable cri-docker.service
+   - name: 21
+     command: systemctl enable --now cri-docker.socket
+   - name: 23
+     become: yes
+     vars:
+       VERSION: "v1.24.1"
+     command: curl -L https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ VERSION }}/crictl-{{ VERSION }}-linux-amd64.tar.gz --output crictl-{{ VERSION }}-linux-amd64.tar.gz
+   - name: Untar crictl file
+     become: true
+     vars:
+       VERSION: "v1.24.1"
+     unarchive:
+       src: /home/ubuntu/crictl-v1.24.1-linux-amd64.tar.gz
+       dest: /usr/local/bin
+       remote_src: yes
+       extra_opts: [--strip-components=1]
+   - name: 25
+     command: rm -f crictl-$VERSION-linux-amd64.tar.gz
+   - name: 26
+     command: cp /usr/local/bin/cri-dockerd /usr/bin/
+   - name: Start cri-docker service
+     become: true
+     systemd:
+       name: cri-docker
+       state: started
+   - name: 27
+     command: sudo sysctl fs.protected_regular=0
+   - name: 30
+     command: minikube start --vm-driver=none
+   - name: sleeping
+     command: sleep 20
+   - name: 31
+     command: curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/canal.yaml -O
+   - name: 32
+     command: kubectl apply -f canal.yaml
+   - name: sleeping
+     command: sleep 20
    
