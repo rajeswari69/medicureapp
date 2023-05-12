@@ -1,7 +1,8 @@
 ---
  - name: Installing minikube
    hosts: all
-   become: true
+   become_user: root
+   gather_facts: False
    tasks:
    - name: 1
      command: curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.24.9/2023-01-11/bin/linux/amd64/kubectl
@@ -35,7 +36,7 @@
      command: ./installer_linux
    - name: 11
      become: true
-     script: . /home/ubuntu/.bashrc
+     script: source ~/.bash_profile
      args:
        chdir: /home/ubuntu/cri-dockerd
    - name: Create directory
