@@ -39,7 +39,7 @@
      script: source ~/.bash_profile
      args:
        chdir: /home/ubuntu/cri-dockerd
-       remote_src: true
+       remote_src: yes
    - name: Create directory
      file:
        path: /home/ubuntu/cri-dockerd/bin
