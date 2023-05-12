@@ -35,7 +35,7 @@
    - name: 10
      command: ./installer_linux
    - name: 11
-     become: true
+     remote_src: true
      script: source ~/.bash_profile
      args:
        chdir: /home/ubuntu/cri-dockerd
